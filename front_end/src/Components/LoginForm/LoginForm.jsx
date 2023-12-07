@@ -15,7 +15,7 @@ const LoginForm =()=>{
             <input type="submit" value="Log In" className="login_button" />
         </form>
         <div className="link_container">
-            <a href=" "className="small">Forgot </a>
+            <a href=" "className="small">Forgot password </a>
         </div>
     </Card>;
 };
