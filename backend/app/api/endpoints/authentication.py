@@ -1,9 +1,18 @@
 from fastapi import APIRouter, HTTPException,status
+from fastapi_mail import FastMail, MessageSchema, ConnectionConfig
+
 from app.config import settings
 from app.db.sesson import create_mongodb_client
 from app.schemas.schema import User ,Login
 from app.api.endpoints.utils import Hasher
 from app.utils.logger import logger
+import smtplib
+from email.mime.text import MIMEText
+
+
+import  yagmail
+
+
 
 router = APIRouter(
     tags=["user"],
@@ -49,3 +58,25 @@ async def loginUser(info:Login):
     except Exception as e:
         logger.error(f"Error inserting data: {str(e)}")
         return {"message": f"Error: {str(e)}"}
+
+@router.put("/authentication/forgotPassword/{email}")
+async def forgotPassword(email:str):
+    sender_email = "ganesh527@sasi.ac.in"  # Replace with your Gmail address
+    sender_password = "Chennu7316"  # Replace with your Gmail password
+
+    msg = MIMEText("test")
+    msg['Subject'] = 'Subject of the Email'
+    msg['From'] = "ganesh527@sasi.ac.in"
+    msg['To'] = "rupa4sri@gmail.com"
+
+    try:
+        with smtplib.SMTP_SSL('smtp.gmail.com', 465) as server:
+            server.login(sender_email, sender_password)
+            server.sendmail(sender_email, email, msg.as_string())
+        return {"message": "Email sent successfully!"}
+    except Exception as e:
+        return {"message": f"Failed to send email. Error: {str(e)}"}
+
+
+
+
