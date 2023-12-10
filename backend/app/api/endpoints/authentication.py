@@ -3,7 +3,7 @@ from fastapi_mail import FastMail, MessageSchema, ConnectionConfig
 
 from app.config import settings
 from app.db.sesson import create_mongodb_client
-from app.schemas.schema import User ,Login
+from app.schemas.schema import User ,Login,ConfirmPasaword
 from app.api.endpoints.utils import Hasher
 from app.utils.logger import logger
 import smtplib
@@ -62,8 +62,8 @@ async def loginUser(info:Login):
 
 @router.put("/authentication/forgotPassword/{email}")
 async def forgotPassword(email:str):
-    sender_email = "ganesh527@sasi.ac.in"  # Replace with your Gmail address
-    sender_password = "Chennu7316"  # Replace with your Gmail password
+    sender_email = "ganesh527@sasi.ac.in" 
+    sender_password = "Chennu7316"  
     code=random.randint(1000,9999)
     msg = MIMEText(f"reset your password with this code {code}")
     msg['Subject'] = 'Reset your password'
@@ -73,12 +73,28 @@ async def forgotPassword(email:str):
     try:
         with smtplib.SMTP_SSL('smtp.gmail.com', 465) as server:
             server.login(sender_email, sender_password)
-            server.sendmail(sender_email, email, msg.as_string())
+            server.sendmail(email, email, msg.as_string())
         client = create_mongodb_client()
         db = client[settings.DB_NAME]
         collection = db.get_collection(settings.CODES)
+        collection.delete_one({"email":email})
         collection.insert_one({"email":email,"code":code})
         return {"message": "Email sent successfully!"}
+    except Exception as e:
+        return {"message": f"Failed to send email. Error: {str(e)}"}
+@router.post("/authentication/confirmPassword")
+async def confirmPassword(info:ConfirmPasaword):
+    try:
+        client = create_mongodb_client()
+        db = client[settings.DB_NAME]
+        collection = db.get_collection(settings.CODES)
+        updatePassword=db.get_collection(settings.USERS)
+        result=collection.find_one({"email":info.email,"code":info.code})
+        if result:
+            updatePassword.update_one({"email":info.email},{"$set":{"password":Hasher().get_password_hash(info.password)}})
+            return {"message": "updated passowrd successfully!","status_code":200}
+        else:
+            return {"message": "invalid code please try again","status_code":400}
     except Exception as e:
         return {"message": f"Failed to send email. Error: {str(e)}"}
 
