@@ -15,5 +15,9 @@ class ConfirmPasaword(BaseModel):
     email: str
     password: str
     code : int 
+class ResetPassword(BaseModel):
+    email: str
+    currentPassword:str
+    newPassword:str
 
     

@@ -3,7 +3,7 @@ from fastapi_mail import FastMail, MessageSchema, ConnectionConfig
 
 from app.config import settings
 from app.db.sesson import create_mongodb_client
-from app.schemas.schema import User ,Login,ConfirmPasaword
+from app.schemas.schema import User ,Login,ConfirmPasaword,ResetPassword
 from app.api.endpoints.utils import Hasher
 from app.utils.logger import logger
 import smtplib
@@ -95,6 +95,22 @@ async def confirmPassword(info:ConfirmPasaword):
             return {"message": "updated passowrd successfully!","status_code":200}
         else:
             return {"message": "invalid code please try again","status_code":400}
+    except Exception as e:
+        return {"message": f"Failed to send email. Error: {str(e)}"}
+@router.post("/authentication/resetPassword")
+async def confirmPassword(info:ResetPassword):
+    try:
+        client = create_mongodb_client()
+        db = client[settings.DB_NAME]
+        updatePassword=db.get_collection(settings.USERS)
+        result=updatePassword.find_one({"email":info.email})
+        verifyPassword=Hasher()
+        validOrNot=verifyPassword.verify_password(info.currentPassword,result.get("password"))
+        if(validOrNot==True):
+            updatePassword.update_one({"email":info.email},{"$set":{"password":Hasher().get_password_hash(info.newPassword)}})
+            return {"message": "updated passowrd successfully!","status_code":200}
+        else:
+            return {"message": "invalid passowrd please try again","status_code":400}
     except Exception as e:
         return {"message": f"Failed to send email. Error: {str(e)}"}
 
