@@ -1,8 +1,11 @@
 import { useForm } from "react-hook-form"
 import { Link, useNavigate } from "react-router-dom"
-import toast from "react-hot-toast"
+import axios from 'axios';
+import { toast } from 'react-hot-toast';
 
 const ResetPassword = () => {
+  const navigate = useNavigate()
+
   const {
     register,
     watch,
@@ -12,8 +15,24 @@ const ResetPassword = () => {
     mode: "onTouched",
   })
 
-  const onSubmit = (data) => {
+  const onSubmit = async (data) => {
     console.log(data)
+    
+    const requestBody={
+      email:data.email,
+      password: data.confirm_password,
+      code: data.activation_code
+    }
+    
+    const result= await axios.post("http://127.0.0.1:8000/authentication/confirmPassword",requestBody)
+    if(result.data.status_code===200)
+    {
+      toast.success(result.data.message)
+      navigate("/login")
+    }
+    else{
+      toast.error(result.data.message)
+    }
   }
 
   const password = watch("create_password")
@@ -25,7 +44,6 @@ const ResetPassword = () => {
       : ""
   console.log(active, password)
 
-  const navigate = useNavigate()
   return (
     <div className="container">
       <form className="form" onSubmit={handleSubmit(onSubmit)}>
@@ -45,7 +63,7 @@ const ResetPassword = () => {
           )}
           <div className="input-field">
             <input
-              type="text"
+              type="number"
               className="input"
               placeholder="Activation code *"
               {...register("activation_code", { required: true })}
@@ -83,18 +101,8 @@ const ResetPassword = () => {
             <span className="error-msg">*This field is required</span>
           )}
 
-          <button
-            type="submit"
-            className={`btn ${active}`}
-            onClick={() => {
-              if (password !== "") {
-                navigate("/reset-password")
-              } else {
-                toast.error("Please Enter Email")
-              }
-            }}
-          >
-            Create Password
+           <button type="submit" className="btn">
+            Login
           </button>
         </div>
       </form>

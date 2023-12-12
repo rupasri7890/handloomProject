@@ -4,7 +4,7 @@ import axios from 'axios';
 import { Link ,useNavigate} from "react-router-dom";
 import { toast } from 'react-hot-toast';
 
-const Signup = () => {
+const SignUp = () => {
   const navigate =useNavigate();
 
   const {
@@ -158,4 +158,4 @@ const Signup = () => {
   )
 }
 
-export default Signup
+export default SignUp

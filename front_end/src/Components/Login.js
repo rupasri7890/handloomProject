@@ -27,7 +27,6 @@ const Login = ( ) => {
 
   const onSubmit = async (data) => {
     try {
-      console.log("hello")
       const response = await axios.post('http://127.0.0.1:8000/authentication/login', {
         email: data.email,
         password: data.password,

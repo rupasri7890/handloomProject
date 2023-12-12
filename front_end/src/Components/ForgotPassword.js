@@ -1,9 +1,13 @@
 import { useForm } from "react-hook-form"
 import { Link, useNavigate } from "react-router-dom"
 // import { useRef, useState } from "react"
-import toast from "react-hot-toast"
+import axios from 'axios';
+import { toast } from 'react-hot-toast';
+
+
 
 const ForgotPassword = () => {
+  const routing =useNavigate()
   const {
     register,
     watch,
@@ -15,8 +19,18 @@ const ForgotPassword = () => {
   //const [otp, setOtp] = useState(null)
   //const inputRefs = [useRef(null), useRef(null), useRef(null), useRef(null)]
 
-  const onSubmit = (data) => {
-    console.log(data)
+  const onSubmit = async (data) => {
+    console.log("hello")
+     const result=await axios.put("http://127.0.0.1:8000/authentication/forgotPassword/" +data.email)
+     if(result.data.status_code===201)
+     {
+      toast.success(result.data.message);
+      routing("/reset-password")
+
+     }else{
+      console.log(result.data.message)
+      toast.error(result.data.message);
+     }
   }
 
   /* const handleInputChange = (index, e) => {
@@ -58,7 +72,6 @@ const ForgotPassword = () => {
   const active = email !== "" ? "active" : ""
   console.log(active, email)
 
-  const navigate = useNavigate()
   return (
     <div className="container">
       <form className="form" onSubmit={handleSubmit(onSubmit)}>
@@ -93,28 +106,8 @@ const ForgotPassword = () => {
             ))}
           </div> */}
 
-          <button
-            type="submit"
-            className={`btn ${active}`}
-            onClick={() => {
-              if (email !== "") {
-                navigate("/reset-password")
-              } else {
-                toast.error("Please Enter Email")
-              }
-            }}
-          >
-            <span
-            /* onClick={() => {
-                  if (email !== "") {
-                    toast.success("OTP Sent Successfully")
-                  } else {
-                    toast.error("Please Enter Email")
-                  }
-                }} */
-            >
-              Send link to email
-            </span>
+          <button type="submit" className="btn">
+            sent Email
           </button>
 
           <Link
