@@ -100,7 +100,7 @@ const Login = ( ) => {
           </button>
 
           <div className="signup-link">
-            <span>Dont have an account? </span>
+            <span>Don't have an account? </span>
             <Link to="/signup" className="link">
               Signup
             </Link>
