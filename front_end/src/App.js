@@ -7,17 +7,18 @@ import { Toaster } from "react-hot-toast"
 function App() {
   return (
     <>
-      <Toaster position="top-center" />
+      <Toaster position="top-right" />
       <BrowserRouter>
         <Routes>
-          <Route path="/" element={<div>Home</div>} />
-          <Route path="/login" element={<Login />} />
+          <Route path="/home" element={<div>Home</div>} />
+          <Route path="/" element={<Login />} />
           <Route path="/signup" element={<Signup />} />
           <Route path="/forgot-password" element={<ForgotPassword />} />
         </Routes>
       </BrowserRouter>
     </>
   )
+  
 }
 
 export default App
