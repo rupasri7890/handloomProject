@@ -1,8 +1,12 @@
 import { useForm } from "react-hook-form"
 import "../styles.css"
-import { Link } from "react-router-dom"
+import axios from 'axios';
+import { Link ,useNavigate} from "react-router-dom";
+import { toast } from 'react-hot-toast';
 
 const Signup = () => {
+  const navigate =useNavigate();
+
   const {
     register,
     handleSubmit,
@@ -11,9 +15,32 @@ const Signup = () => {
     mode: "onTouched",
   })
 
-  const onSubmit = (data) => {
-    alert(JSON.stringify(data))
-  }
+  const onSubmit = async (data) => {
+    try {
+      console.log(data)
+      
+      const requstBodyData={
+          first_name: data.first_name,
+          last_name: data.last_name,
+          email:data.email,
+          password:data.password,
+          phone_number: data.phone_number,
+          address: data.address||""
+        
+
+      }
+      const response = await axios.post('http://127.0.0.1:8000/authentication/createUser',requstBodyData);
+      if (response.data.status_code === 201) {
+        toast.success(response.data.message);
+        navigate("/");
+      } else {
+        toast.error(response.data.message);
+      }
+    } catch (error) {
+      //setLoginError('Login failed. Please try again.');
+      console.error('Error:', error);
+    }
+    }
 
   const validatePassword = (value) => {
     if (!value) {

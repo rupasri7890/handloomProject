@@ -1,8 +1,18 @@
-import { useForm } from "react-hook-form"
-import "../styles.css"
-import { Link } from "react-router-dom"
+import { useForm } from "react-hook-form";
+//import {useState} from "react"
+import "../styles.css";
+import { Link ,useNavigate} from "react-router-dom";
+import { toast } from 'react-hot-toast';
 
-const Login = () => {
+
+
+
+import axios from 'axios';
+
+
+const Login = ( ) => {
+  const navigate =useNavigate();
+
   const {
     register,
     handleSubmit,
@@ -11,26 +21,36 @@ const Login = () => {
     mode: "onTouched",
   })
 
-  const onSubmit = (data) => {
-    alert(JSON.stringify(data))
-  }
+  // const [error, setError] = useState();
+
+
+
+  const onSubmit = async (data) => {
+    try {
+      console.log("hello")
+      const response = await axios.post('http://127.0.0.1:8000/authentication/login', {
+        email: data.email,
+        password: data.password,
+      });
+      if (response.data.status_code === 200) {
+        toast.success(response.data.message);
+        navigate("/home"); 
+
+      } else {
+        toast.error(response.data.message);
+      }
+    } catch (error) {
+      //setLoginError('Login failed. Please try again.');
+      console.error('Error:', error);
+    }
+  };
 
   const validatePassword = (value) => {
     if (!value) {
       return "Password is required"
     }
 
-    /*   const specialCharRegex = /[!@#$%^&*(),.?":{}|<>]/
-    const startsWithCapital = /^[A-Z]/
-
-    if (!specialCharRegex.test(value)) {
-      return "Password must contain at least one special character"
-    }
-
-    if (!startsWithCapital.test(value)) {
-      return "Password must start with a capital letter"
-    } */
-
+   
     if (value.length < 6) {
       return "Password must be at least 6 characters"
     }

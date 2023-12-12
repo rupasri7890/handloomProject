@@ -8,18 +8,19 @@ import ResetPassword from "./Components/ResetPassword"
 function App() {
   return (
     <>
-      <Toaster position="top-center" />
+      <Toaster position="top-right" />
       <BrowserRouter>
         <Routes>
-          <Route path="/" element={<div>Home</div>} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/signup" element={<SignUp />} />
+          <Route path="/home" element={<div>Home</div>} />
+          <Route path="/" element={<Login />} />
+          <Route path="/signup" element={<Signup />} />
           <Route path="/forgot-password" element={<ForgotPassword />} />
           <Route path="/reset-password" element={<ResetPassword />} />
         </Routes>
       </BrowserRouter>
     </>
   )
+  
 }
 
 export default App
