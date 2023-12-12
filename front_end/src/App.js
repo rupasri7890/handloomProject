@@ -1,42 +1,23 @@
-import './App.css';
-import profile from "./image/image.jpg";
-import email from "./image/email logo.png";
-import password from "./image/lock logo.png";
+import { BrowserRouter, Routes, Route } from "react-router-dom"
+import Login from "./Components/Login"
+import Signup from "./Components/SignUp"
+import ForgotPassword from "./Components/ForgotPassword"
+import { Toaster } from "react-hot-toast"
+
 function App() {
   return (
-    <div className="main">
-      <div className="sub-main">
-        <div>
-          <div className="imgs">
-            <div className="container-image">
-              <img src={profile} alt="profile" classNameo="profile"/>
-            </div>
-
-          </div>
-          <div>
-            <h1>Login Page</h1>
-            <div>
-              <img src={email} alt="email" className="email"/>
-              <input type="text" placeholder="user name" className="name"/>
-            </div>
-            <div className="second-input">
-              <img src={password} alt="password" className="email"/>
-              <input type="text" placeholder="user name" className="name"/>
-            </div>
-            <div className="loginbutton">
-            <button>Login</button>
-            </div>
-            
-              <p className="links">
-                <a href="#">Forgot password? </a> Or <a href="#"> Sign Up</a> 
-              </p>
-            
-          </div>
-        </div>
-
-      </div>
-    </div>
-  );
+    <>
+      <Toaster position="top-center" />
+      <BrowserRouter>
+        <Routes>
+          <Route path="/" element={<div>Home</div>} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/signup" element={<Signup />} />
+          <Route path="/forgot-password" element={<ForgotPassword />} />
+        </Routes>
+      </BrowserRouter>
+    </>
+  )
 }
 
-export default App;
+export default App
