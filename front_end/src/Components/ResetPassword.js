@@ -1,10 +1,11 @@
 import { useForm } from "react-hook-form"
 import { Link, useNavigate } from "react-router-dom"
-import axios from 'axios';
 import { toast } from 'react-hot-toast';
+import { resetPassword,forgotPassword } from "../ada/authentication_apies";
 
 const ResetPassword = () => {
   const navigate = useNavigate()
+  
 
   const {
     register,
@@ -14,7 +15,18 @@ const ResetPassword = () => {
   } = useForm({
     mode: "onTouched",
   })
+   const resendActivationCode=async(email)=>{
+    const result=await forgotPassword(email)
+     if(result.data.status_code===201)
+     {
+      toast.success(result.data.message);
 
+     }else{
+      console.log(result.data.message)
+      toast.error(result.data.message);
+     }
+            
+   }
   const onSubmit = async (data) => {
     console.log(data)
     
@@ -24,17 +36,17 @@ const ResetPassword = () => {
       code: data.activation_code
     }
     
-    const result= await axios.post("http://127.0.0.1:8000/authentication/confirmPassword",requestBody)
+    const result= await resetPassword(requestBody)
     if(result.data.status_code===200)
     {
       toast.success(result.data.message)
-      navigate("/login")
+      navigate("/")
     }
     else{
       toast.error(result.data.message)
     }
   }
-
+  
   const password = watch("create_password")
   const confirm_password = watch("confirm_password")
   const activation_code = watch("activation_code")
@@ -74,8 +86,10 @@ const ResetPassword = () => {
             <span className="error-msg">*This field is required</span>
           )}
           <span style={{ alignSelf: "flex-end" }}>
-            <Link className="link">Resend Activation Code</Link>
-          </span>
+          <Link className="link" onClick={() => resendActivationCode(watch("email"))}>
+            Resend Activation Code
+          </Link>         
+           </span>
           <div className="input-field">
             <input
               type="password"

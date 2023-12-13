@@ -1,8 +1,8 @@
 import { useForm } from "react-hook-form"
 import "../styles.css"
-import axios from 'axios';
 import { Link ,useNavigate} from "react-router-dom";
 import { toast } from 'react-hot-toast';
+import { signUp } from "../ada/authentication_apies";
 
 const SignUp = () => {
   const navigate =useNavigate();
@@ -25,11 +25,12 @@ const SignUp = () => {
           email:data.email,
           password:data.password,
           phone_number: data.phone_number,
-          address: data.address||""
+          address: data.address||"",
+          role:data.dropdown
         
 
       }
-      const response = await axios.post('http://127.0.0.1:8000/authentication/createUser',requstBodyData);
+      const response = await signUp(requstBodyData)
       if (response.data.status_code === 201) {
         toast.success(response.data.message);
         navigate("/");
@@ -120,6 +121,17 @@ const SignUp = () => {
           {errors.password && (
             <span className="error-msg">*{errors.password.message}</span>
           )}
+          
+          <div className="input-field">
+            <select {...register("dropdown", { required: true })} className="input">
+              <option value="">Role</option>
+              <option value="waver">waver</option>
+              <option value="customer">customer</option>
+            </select>
+            {errors.dropdown && (
+              <span className="error-msg">* Please select an option</span>
+            )}
+          </div>
           <div className="input-field">
             <input
               type="text"
@@ -148,7 +160,7 @@ const SignUp = () => {
 
           <div className="signup-link">
             <span>Already have an account? </span>
-            <Link to="/login" className="link">
+            <Link to="/" className="link">
               Login
             </Link>
           </div>

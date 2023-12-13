@@ -8,6 +8,7 @@ class User(BaseModel):
     password:str
     phone_number:str
     address: Optional[str]=None
+    role: str
 class Login(BaseModel):
     email: str
     password: str
