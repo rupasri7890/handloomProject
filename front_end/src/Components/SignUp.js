@@ -1,8 +1,8 @@
 import { useForm } from "react-hook-form"
 import "../styles.css"
-import axios from 'axios';
 import { Link ,useNavigate} from "react-router-dom";
 import { toast } from 'react-hot-toast';
+import { signUp } from "../ada/authentication_apies";
 
 const SignUp = () => {
   const navigate =useNavigate();
@@ -29,7 +29,7 @@ const SignUp = () => {
         
 
       }
-      const response = await axios.post('http://127.0.0.1:8000/authentication/createUser',requstBodyData);
+      const response = await signUp(requstBodyData)
       if (response.data.status_code === 201) {
         toast.success(response.data.message);
         navigate("/");

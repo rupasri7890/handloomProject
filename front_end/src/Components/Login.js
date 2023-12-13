@@ -7,7 +7,7 @@ import { toast } from 'react-hot-toast';
 
 
 
-import axios from 'axios';
+import { login } from "../ada/authentication_apies";
 
 
 const Login = ( ) => {
@@ -27,10 +27,7 @@ const Login = ( ) => {
 
   const onSubmit = async (data) => {
     try {
-      const response = await axios.post('http://127.0.0.1:8000/authentication/login', {
-        email: data.email,
-        password: data.password,
-      });
+      const response = await login(data)
       if (response.data.status_code === 200) {
         toast.success(response.data.message);
         navigate("/home"); 

@@ -1,8 +1,8 @@
 import { useForm } from "react-hook-form"
 import { Link, useNavigate } from "react-router-dom"
 // import { useRef, useState } from "react"
-import axios from 'axios';
 import { toast } from 'react-hot-toast';
+import { forgotPassword } from "../ada/authentication_apies";
 
 
 
@@ -20,8 +20,7 @@ const ForgotPassword = () => {
   //const inputRefs = [useRef(null), useRef(null), useRef(null), useRef(null)]
 
   const onSubmit = async (data) => {
-    console.log("hello")
-     const result=await axios.put("http://127.0.0.1:8000/authentication/forgotPassword/" +data.email)
+     const result=await forgotPassword(data.email)
      if(result.data.status_code===201)
      {
       toast.success(result.data.message);
