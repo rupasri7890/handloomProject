@@ -30,7 +30,12 @@ const Login = ( ) => {
       const response = await login(data)
       if (response.data.status_code === 200) {
         toast.success(response.data.message);
-        navigate("/home"); 
+        if(response.data.role==="waver"){
+          navigate("/waverHome")
+        }
+        else{
+          navigate("/customerHome")
+        }
 
       } else {
         toast.error(response.data.message);

@@ -110,7 +110,7 @@ const ForgotPassword = () => {
           </button>
 
           <Link
-            to="/login"
+            to="/"
             style={{
               textAlign: "center",
               color: "blue",

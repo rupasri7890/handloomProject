@@ -25,7 +25,8 @@ const SignUp = () => {
           email:data.email,
           password:data.password,
           phone_number: data.phone_number,
-          address: data.address||""
+          address: data.address||"",
+          role:data.dropdown
         
 
       }
@@ -120,6 +121,17 @@ const SignUp = () => {
           {errors.password && (
             <span className="error-msg">*{errors.password.message}</span>
           )}
+          
+          <div className="input-field">
+            <select {...register("dropdown", { required: true })} className="input">
+              <option value="">Role</option>
+              <option value="waver">waver</option>
+              <option value="customer">customer</option>
+            </select>
+            {errors.dropdown && (
+              <span className="error-msg">* Please select an option</span>
+            )}
+          </div>
           <div className="input-field">
             <input
               type="text"
@@ -148,7 +160,7 @@ const SignUp = () => {
 
           <div className="signup-link">
             <span>Already have an account? </span>
-            <Link to="/login" className="link">
+            <Link to="/" className="link">
               Login
             </Link>
           </div>

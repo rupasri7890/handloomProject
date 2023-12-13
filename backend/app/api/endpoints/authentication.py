@@ -50,7 +50,7 @@ async def loginUser(info:Login):
             verifyPassword=Hasher()
             validOrNot=verifyPassword.verify_password(info.password,result.get("password"))
             if(validOrNot==True):
-                return {"message": "user login scussfully","status_code":200}
+                return {"message": "user login scussfully","status_code":200,"role":result.get("role")}
             else:
                 return {"message": "Invalid  password","status_code":401}
         else:
