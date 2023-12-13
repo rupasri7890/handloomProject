@@ -79,7 +79,7 @@ async def forgotPassword(email:str):
         collection = db.get_collection(settings.CODES)
         collection.delete_one({"email":email})
         collection.insert_one({"email":email,"code":code})
-        return {"message": "Email sent successfully!"}
+        return {"message": "Email sent successfully!","status_code":201}
     except Exception as e:
         return {"message": f"Failed to send email. Error: {str(e)}"}
 @router.post("/authentication/confirmPassword")
