@@ -2,13 +2,14 @@ import { useForm } from "react-hook-form"
 import "../styles.css"
 import { Link ,useNavigate} from "react-router-dom";
 import { toast } from 'react-hot-toast';
-import { signUp } from "../ada/authentication_apies";
+import { signUp } from "../integration/authentication_apies"
 
 const SignUp = () => {
   const navigate =useNavigate();
 
   const {
     register,
+    watch,
     handleSubmit,
     formState: { errors },
   } = useForm({
@@ -65,6 +66,13 @@ const SignUp = () => {
 
     return true
   }
+  const allValues = watch()
+
+  const active = Object.values(allValues).every(
+    (value) => value !== undefined && value !== ""
+  )
+    ? "active"
+    : ""
 
   return (
     <div className="container">
@@ -154,7 +162,7 @@ const SignUp = () => {
             <span className="input-border"></span>
           </div>
 
-          <button type="submit" className="btn">
+          <button type="submit" className={`btn ${active}`}>
             Create
           </button>
 

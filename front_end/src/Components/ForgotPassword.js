@@ -2,7 +2,7 @@ import { useForm } from "react-hook-form"
 import { Link, useNavigate } from "react-router-dom"
 // import { useRef, useState } from "react"
 import { toast } from 'react-hot-toast';
-import { forgotPassword } from "../ada/authentication_apies";
+import { forgotPassword } from "../integration/authentication_apies";
 
 
 
@@ -68,7 +68,7 @@ const ForgotPassword = () => {
   } */
 
   const email = watch("email")
-  const active = email !== "" ? "active" : ""
+  const active = email !== "" && email !== undefined ? "active" : ""
   console.log(active, email)
 
   return (
@@ -105,8 +105,21 @@ const ForgotPassword = () => {
             ))}
           </div> */}
 
-          <button type="submit" className="btn">
-            sent Email
+         <button
+            type="submit"
+            className={`btn ${active}`}
+          >
+            <span
+            /* onClick={() => {
+                  if (email !== "") {
+                    toast.success("OTP Sent Successfully")
+                  } else {
+toast.error("Please Enter Email")
+                  }
+                }} */
+            >
+              Send link to email
+            </span>
           </button>
 
           <Link

@@ -1,7 +1,7 @@
 import { useForm } from "react-hook-form"
 import { Link, useNavigate } from "react-router-dom"
 import { toast } from 'react-hot-toast';
-import { resetPassword,forgotPassword } from "../ada/authentication_apies";
+import { resetPassword,forgotPassword } from "../integration/authentication_apies";
 
 const ResetPassword = () => {
   const navigate = useNavigate()
@@ -50,11 +50,19 @@ const ResetPassword = () => {
   const password = watch("create_password")
   const confirm_password = watch("confirm_password")
   const activation_code = watch("activation_code")
-  const active =
-    password !== "" && confirm_password !== "" && activation_code !== ""
+  const allValues = watch()
+
+  let active = false
+
+  if (Object.keys(allValues).length === 0) {
+    active = ""
+  } else {
+    active = Object.values(allValues).every(
+      (value) => value !== undefined && value !== ""
+    )
       ? "active"
       : ""
-  console.log(active, password)
+  }
 
   return (
     <div className="container">
@@ -115,8 +123,26 @@ const ResetPassword = () => {
             <span className="error-msg">*This field is required</span>
           )}
 
-           <button type="submit" className="btn">
-            Login
+<button
+            type="submit"
+            className={`btn ${active}`}
+            onClick={() => {
+              if (password !== confirm_password) {
+                toast.error("Password did not match")
+              } else if (password.length < 6) {
+                toast.error("Password must be atleast 6 characters long")
+              } else if (
+                password === confirm_password &&
+                activation_code !== ""
+              ) {
+                toast.success("Password changed successfully")
+                //navigate("/login")
+              } else {
+                toast.error("Please fill all the fields")
+              }
+            }}
+          >
+            Create Password
           </button>
         </div>
       </form>
