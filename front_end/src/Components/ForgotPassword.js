@@ -12,7 +12,7 @@ const ForgotPassword = () => {
     register,
     watch,
     handleSubmit,
-    formState: { errors },
+    formState: { errors,isValid },
   } = useForm({
     mode: "onTouched",
   })
@@ -81,17 +81,23 @@ const ForgotPassword = () => {
         </p>
         <div className="inputs">
           <div className="input-field">
-            <input
-              type="email"
-              className="input"
-              placeholder="Email *"
-              {...register("email", { required: true })}
-            />
+          <input
+  type="email"
+  className="input"
+  placeholder="Email*"
+  {...register("email", {
+    required: "Email is required",
+    pattern: {
+      value: /\S+@\S+\.\S+/,
+      message: "Please enter a valid email address",
+    },
+  })}
+/>
             <span className="input-border"></span>
           </div>
           {errors.email && (
-            <span className="error-msg">*This field is required</span>
-          )}
+  <span className="error-msg">{errors.email.message}</span>
+)}
 
           {/*    <div className="otp-fields">
             {[0, 1, 2, 3].map((index) => (
@@ -106,21 +112,12 @@ const ForgotPassword = () => {
           </div> */}
 
          <button
-            type="submit"
-            className={`btn ${active}`}
-          >
-            <span
-            /* onClick={() => {
-                  if (email !== "") {
-                    toast.success("OTP Sent Successfully")
-                  } else {
-toast.error("Please Enter Email")
-                  }
-                }} */
-            >
-              Send link to email
-            </span>
-          </button>
+  type="submit"
+  className={`btn ${isValid ? 'active' : ''}`}
+  disabled={!isValid} // Disable the button when the form is not valid
+>
+  Sent Email
+</button>
 
           <Link
             to="/"

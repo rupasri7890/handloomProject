@@ -46,18 +46,7 @@ const Login = ( ) => {
     }
   };
 
-  const validatePassword = (value) => {
-    if (!value) {
-      return "Password is required"
-    }
-
-   
-    if (value.length < 6) {
-      return "Password must be at least 6 characters"
-    }
-
-    return true
-  }
+  
 
   return (
     <div className="container">
@@ -65,26 +54,41 @@ const Login = ( ) => {
         <h1 className="title">Login</h1>
         <div className="inputs">
           <div className="input-field">
-            <input
-              type="email"
-              className="input"
-              placeholder="Email"
-              {...register("email", { required: true })}
-            />
+          <input
+  type="email"
+  className="input"
+  placeholder="Email*"
+  {...register("email", {
+    required: "Email is required",
+    pattern: {
+      value: /\S+@\S+\.\S+/,
+      message: "Please enter a valid email address",
+    },
+  })}
+/>
+
             <span className="input-border"></span>
           </div>
           {errors.email && (
-            <span className="error-msg">*Email is required</span>
-          )}
+  <span className="error-msg">{errors.email.message}</span>
+)}
           <div className="input-field">
             <input
-              type="password"
-              className="input"
-              placeholder="Password"
-              {...register("password", {
-                validate: validatePassword,
-              })}
-            />
+            type="password"
+            className="input"
+            placeholder="Password*"
+            {...register("password", {
+              required: true,
+              validate: {
+                length: (value) =>
+                  value.length >= 6 || "Password must be at least 6 characters",
+                specialChar: (value) =>
+                  /[!@#$%^&*(),.?":{}|<>]/.test(value) ||
+                  "Password must contain at least one special character",
+                capitalLetter: (value) =>
+                /[A-Z]/.test(value) || "Password must contain a capital letter",              },
+            })}
+          />
             <span className="input-border"></span>
           </div>
           {errors.password && (
@@ -95,11 +99,10 @@ const Login = ( ) => {
               <span>Forgot Password?</span>
             </Link>
           </div>
-
           <button
   type="submit"
-  className={`btn ${isValid ? 'green-btn' : ''}`}
-  disabled={!isValid}
+  className={`btn ${isValid ? 'active' : ''}`}
+  disabled={!isValid} // Disable the button when the form is not valid
 >
   Login
 </button>

@@ -9,9 +9,8 @@ const SignUp = () => {
 
   const {
     register,
-    watch,
     handleSubmit,
-    formState: { errors },
+    formState: { errors,isValid},
   } = useForm({
     mode: "onTouched",
   })
@@ -66,13 +65,13 @@ const SignUp = () => {
 
     return true
   }
-  const allValues = watch()
+  // const allValues = watch()
 
-  const active = Object.values(allValues).every(
-    (value) => value !== undefined && value !== ""
-  )
-    ? "active"
-    : ""
+  // const active = Object.values(allValues).every(
+  //   (value) => value !== undefined && value !== ""
+  // )
+  //   ? "active"
+  //   : ""
 
   return (
     <div className="container">
@@ -83,7 +82,7 @@ const SignUp = () => {
             <input
               type="text"
               className="input"
-              placeholder="* First Name"
+              placeholder="First Name*"
               {...register("first_name", { required: true })}
             />
             <span className="input-border"></span>
@@ -95,7 +94,7 @@ const SignUp = () => {
             <input
               type="text"
               className="input"
-              placeholder="* Last Name"
+              placeholder="Last Name*"
               {...register("last_name", { required: true })}
             />
             <span className="input-border"></span>
@@ -104,17 +103,23 @@ const SignUp = () => {
             <span className="error-msg">*Last Name is required</span>
           )}
           <div className="input-field">
-            <input
-              type="email"
-              className="input"
-              placeholder="* Email"
-              {...register("email", { required: true })}
-            />
+          <input
+  type="email"
+  className="input"
+  placeholder="Email*"
+  {...register("email", {
+    required: "Email is required",
+    pattern: {
+      value: /\S+@\S+\.\S+/,
+      message: "Please enter a valid email address",
+    },
+  })}
+/>
             <span className="input-border"></span>
           </div>
           {errors.email && (
-            <span className="error-msg">*Email is required</span>
-          )}
+  <span className="error-msg">{errors.email.message}</span>
+)}
           <div className="input-field">
             <input
               type="password"
@@ -131,8 +136,7 @@ const SignUp = () => {
           )}
           
           <div className="input-field">
-            <select {...register("dropdown", { required: true })} className="input">
-              <option value="">Role</option>
+            <select {...register("dropdown", { required: true })} className="input" placeholder="role*">
               <option value="waver">waver</option>
               <option value="customer">customer</option>
             </select>
@@ -144,7 +148,7 @@ const SignUp = () => {
             <input
               type="text"
               className="input"
-              placeholder="* Phone no."
+              placeholder="Phone no.*"
               {...register("phone_number", { required: true })}
             />
             <span className="input-border"></span>
@@ -161,11 +165,14 @@ const SignUp = () => {
             />
             <span className="input-border"></span>
           </div>
-
-          <button type="submit" className={`btn ${active}`}>
-            Create
-          </button>
-
+          <button
+  type="submit"
+  className={`btn ${isValid ? 'active' : ''}`}
+  disabled={!isValid} // Disable the button when the form is not valid
+>
+  Create Account
+</button>
+          
           <div className="signup-link">
             <span>Already have an account? </span>
             <Link to="/" className="link">
