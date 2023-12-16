@@ -30,8 +30,8 @@ const Login = ( ) => {
       const response = await login(data)
       if (response.data.status_code === 200) {
         toast.success(response.data.message);
-        if(response.data.role==="waver"){
-          navigate("/waverHome")
+        if(response.data.role==="weaver"){
+          navigate("/weaverHome")
         }
         else{
           navigate("/customerHome")

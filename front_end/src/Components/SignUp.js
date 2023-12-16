@@ -137,7 +137,7 @@ const SignUp = () => {
           
           <div className="input-field">
             <select {...register("dropdown", { required: true })} className="input" placeholder="role*">
-              <option value="waver">waver</option>
+              <option value="weaver">weaver</option>
               <option value="customer">customer</option>
             </select>
             {errors.dropdown && (

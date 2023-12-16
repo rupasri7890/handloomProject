@@ -68,7 +68,7 @@ async def forgotPassword(email:str):
     msg = MIMEText(f"reset your password with this code {code}")
     msg['Subject'] = 'Reset your password'
     msg['From'] = "ganesh527@sasi.ac.in"
-    msg['To'] = "rupa4sri@gmail.com"
+    msg['To'] = email
 
     try:
         with smtplib.SMTP_SSL('smtp.gmail.com', 465) as server:
