@@ -8,6 +8,7 @@ from app.api.endpoints.utils import Hasher
 from app.utils.logger import logger
 import smtplib
 from email.mime.text import MIMEText
+from email.mime.multipart import MIMEMultipart
 import random
 
 
@@ -61,27 +62,46 @@ async def loginUser(info:Login):
         return {"message": f"Error: {str(e)}"}
 
 @router.put("/authentication/forgotPassword/{email}")
-async def forgotPassword(email:str):
-    sender_email = "ganesh527@sasi.ac.in" 
-    sender_password = "Chennu7316"  
-    code=random.randint(1000,9999)
-    msg = MIMEText(f"reset your password with this code {code}")
+async def forgotPassword(email: str):
+    sender_email = "handloomsproject@gmail.com"
+    sender_password = "cstproject"
+
+    code = random.randint(1000, 9999)
+
+    # HTML content for the email body
+    html = f"""
+    <html>
+    <body>
+    <p>Dear User,</p>
+    <p>Reset your password with this code: <strong>{code}</strong></p>
+    </body>
+    </html>
+    """
+
+    msg = MIMEMultipart()
     msg['Subject'] = 'Reset your password'
-    msg['From'] = "ganesh527@sasi.ac.in"
+    msg['From'] = "handloomsproject@gmail.com"
     msg['To'] = email
+    msg.attach(MIMEText(html, 'html'))
+
 
     try:
-        with smtplib.SMTP_SSL('smtp.gmail.com', 465) as server:
-            server.login(sender_email, sender_password)
-            server.sendmail(email, email, msg.as_string())
+# Establish a connection to the SMTP server (in this case, Gmail's SMTP server)
+        with smtplib.SMTP('smtp.gmail.com', 587) as smtp:
+            smtp.starttls()  # Start TLS encryption
+            smtp.login(sender_email, sender_password)
+            smtp.send_message(msg)
+
         client = create_mongodb_client()
         db = client[settings.DB_NAME]
         collection = db.get_collection(settings.CODES)
-        collection.delete_one({"email":email})
-        collection.insert_one({"email":email,"code":code})
-        return {"message": "Email sent successfully!","status_code":201}
+        collection.delete_one({"email": email})
+        collection.insert_one({"email": email, "code": code})
+        
+        return {"message": "Email sent successfully!", "status_code": 201}
     except Exception as e:
         return {"message": f"Failed to send email. Error: {str(e)}"}
+
 @router.post("/authentication/confirmPassword")
 async def confirmPassword(info:ConfirmPasaword):
     try:
