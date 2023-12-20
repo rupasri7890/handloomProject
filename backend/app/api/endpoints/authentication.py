@@ -63,8 +63,8 @@ async def loginUser(info:Login):
 
 @router.put("/authentication/forgotPassword/{email}")
 async def forgotPassword(email: str):
-    sender_email = "handloomsproject@gmail.com"
-    sender_password = "cstproject"
+    sender_email = "rupasri646@sasi.ac.in"
+    sender_password = "Rupa@6268"
 
     code = random.randint(1000, 9999)
 
