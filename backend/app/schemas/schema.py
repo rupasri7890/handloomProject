@@ -20,5 +20,13 @@ class ResetPassword(BaseModel):
     email: str
     currentPassword:str
     newPassword:str
+class AddProduct(BaseModel):
+    id:Optional[str]=None
+    email: str
+    productName: str
+    productImage: str
+    price: str
+    color: str
+    description: str
 
     

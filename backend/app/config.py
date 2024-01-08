@@ -10,6 +10,7 @@ class Settings(BaseSettings):
     CONNECTION_STRING: str = os.getenv('CONNECTION_STRING')
     USERS: str = os.getenv('USERS')
     CODES:str=os.getenv("CODES")
+    PRODUCTS: str=os.getenv("PRODUCTS")
 
     class Config:
         case_sensitive = True
