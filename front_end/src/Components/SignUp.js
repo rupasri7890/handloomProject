@@ -33,10 +33,14 @@ const SignUp = () => {
       const response = await signUp(requstBodyData)
       if (response.data.status_code === 201) {
         toast.success(response.data.message);
-        navigate("/");
+        if(data.dropdown === "weaver") {
+          navigate("/weaverHome")
+          } else {
+          navigate("/customerHome")
+          }
       } else {
         toast.error(response.data.message);
-      }
+      }      
     } catch (error) {
       //setLoginError('Login failed. Please try again.');
       console.error('Error:', error);
