@@ -1,6 +1,9 @@
 import { useForm } from "react-hook-form"
+import { convertToBase64 } from "./utils"
+import { addingWeaverProduct } from "../integration/authentication_apies"
 
 import "../styles.css"
+import toast from "react-hot-toast"
 
 const AddDevice = () => {
   const {
@@ -9,7 +12,22 @@ const AddDevice = () => {
     formState: { errors },
   } = useForm()
 
-  const onSubmit = (data) => console.log(data)
+  const onSubmit = async (data) => {
+    const file = data.image[0]; // Access the file from the form data
+    const base64String = await convertToBase64(file); // Convert file to base64
+    data.image=base64String
+    const response= await addingWeaverProduct(data)
+    if (response.data.status_code === 201) {
+      toast.success(response.data.message);
+     }
+     else if(response.data.status_code===409)
+     {
+      toast.error(response.data.message)
+     }
+     else{
+
+     }
+    }
 
   return (
     <form className="add-device-form" onSubmit={handleSubmit(onSubmit)}>
@@ -51,6 +69,16 @@ const AddDevice = () => {
           id="price"
           className="add-device-input"
           {...register("price", { required: true })}
+        />
+        {errors.price && <span className="error">*This field is required</span>}
+      </div>
+      <div className="add-device-input-container">
+        <label htmlFor="color">Description:</label>
+        <input
+          type="text"
+          id="desc"
+          className="add-device-input"
+          {...register("desc", { required: true })}
         />
         {errors.price && <span className="error">*This field is required</span>}
       </div>

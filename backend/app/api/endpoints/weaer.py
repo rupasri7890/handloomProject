@@ -30,7 +30,7 @@ async def addProduct(info:AddProduct):
     except Exception as e:
         logger.error(f"Error inserting data: {str(e)}")
         return {"message": f"Error: {str(e)}"}
-@router.get("/weaver/getProductsByEmail/{email}",status_code=status.HTTP_201_CREATED)
+@router.get("/weaver/getProductsByEmail",status_code=status.HTTP_201_CREATED)
 async def getProductsByEmail(email:str):
     try:
         client = create_mongodb_client()

@@ -80,3 +80,55 @@ export const forgotPassword=async (data)=>{
     }
 
 }
+export const addingWeaverProduct=async (data)=>{
+
+  try{
+    let productData=
+      {
+        email: localStorage.getItem("email"),
+        productName: data.name,
+        productImage:data.image,
+        price: data.price ,
+        color: data.color,
+        description: data.desc
+      }
+    
+    const result= await axios.post("http://127.0.0.1:8000/weaver/createProduct",productData)
+    return result
+
+}
+catch (error) {
+    if (error.response) {
+      console.error('Server Error:', error.response.data); 
+      throw new Error('Server Error'); 
+    } else if (error.request) {
+      console.error('No Response:', error.request); 
+      throw new Error('No Response');
+    } else {
+      console.error('Error:', error.message);
+      throw new Error('Request Error');
+    }
+}
+}
+export const getWeaverProductByEmail=async (email)=>{
+
+  try{
+    
+    
+    const result= await axios.get("http://127.0.0.1:8000//weaver/getProductsByEmail/"+email)
+    return result
+
+}
+catch (error) {
+    if (error.response) {
+      console.error('Server Error:', error.response.data); 
+      throw new Error('Server Error'); 
+    } else if (error.request) {
+      console.error('No Response:', error.request); 
+      throw new Error('No Response');
+    } else {
+      console.error('Error:', error.message);
+      throw new Error('Request Error');
+    }
+}
+}

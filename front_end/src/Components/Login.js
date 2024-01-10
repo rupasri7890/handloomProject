@@ -30,6 +30,7 @@ const Login = ( ) => {
       const response = await login(data)
       if (response.data.status_code === 200) {
         toast.success(response.data.message);
+        localStorage.setItem("email",data.email)
         if(response.data.role==="weaver"){
           navigate("/weaverHome")
         }
