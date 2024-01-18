@@ -132,3 +132,25 @@ catch (error) {
     }
 }
 }
+export const deletWeaverProductById=async (id)=>{
+
+  try{
+    
+    
+    const result= await axios.delete("http://127.0.0.1:8000/weaver/deleteProductById/"+id)
+    return result
+
+}
+catch (error) {
+    if (error.response) {
+      console.error('Server Error:', error.response.data); 
+      throw new Error('Server Error'); 
+    } else if (error.request) {
+      console.error('No Response:', error.request); 
+      throw new Error('No Response');
+    } else {
+      console.error('Error:', error.message);
+      throw new Error('Request Error');
+    }
+}
+}

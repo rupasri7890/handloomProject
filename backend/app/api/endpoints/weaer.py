@@ -30,18 +30,7 @@ async def addProduct(info:AddProduct):
     except Exception as e:
         logger.error(f"Error inserting data: {str(e)}")
         return {"message": f"Error: {str(e)}"}
-@router.get("/weaver/getProductsByEmail/{email                                                                                                                                                                                                                                                                                                  }",status_code=status.HTTP_201_CREATED)
-async def getProductsByEmail(email:str):
-    try:
-        client = create_mongodb_client()
-        db = client[settings.DB_NAME]
-        collection = db.get_collection(settings.PRODUCTS)
-        result = collection.find({"email":email},projection={"_id": 0})
-        return list(result)
-        
-    except Exception as e:
-        logger.error(f"Error inserting data: {str(e)}")
-        return {"message": f"Error: {str(e)}"}
+
 @router.get("/weaver/getProductById/{id}",status_code=status.HTTP_201_CREATED)
 async def getProductsByEmail(id:str):
     try:
@@ -77,6 +66,18 @@ async def deleteProductById(id:str):
         result = collection.delete_one({"id":id})
         return {"message":"product deleted successfully!","status_code":201}
 
+        
+    except Exception as e:
+        logger.error(f"Error inserting data: {str(e)}")
+        return {"message": f"Error: {str(e)}"}
+@router.get("/weaver/getProductsByEmail/{email}",status_code=status.HTTP_201_CREATED)                                                                                                                                                                                                                                                                                               
+async def getProductsByEmail(email:str):
+    try:
+        client = create_mongodb_client()
+        db = client[settings.DB_NAME]
+        collection = db.get_collection(settings.PRODUCTS)
+        result = collection.find({"email":email},projection={"_id": 0})
+        return list(result)
         
     except Exception as e:
         logger.error(f"Error inserting data: {str(e)}")

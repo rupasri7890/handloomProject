@@ -7,6 +7,22 @@ import { RiDeleteBin6Line } from "react-icons/ri"
 import { FiEdit2 } from "react-icons/fi"
 import Popup from "reactjs-popup"
 import AddDevice from './AddDevice';
+import { toast } from 'react-hot-toast';
+
+import { deletWeaverProductById } from '../integration/authentication_apies';
+const handleDeleteProduct=async (id)=>{
+  console.log(id)
+
+   const response=await deletWeaverProductById(id)
+  if (response.data.status_code === 201) {
+    toast.success(response.data.message);
+    
+
+  } else {
+    toast.error(response.data.message);
+  }
+
+}
 
 const WeaverPage = () => {
   const [devices, setDevices] = useState([]);
@@ -68,33 +84,59 @@ const WeaverPage = () => {
       </nav>
       <h3 className="active-heading">Active Devices</h3>
       <div className="devices-container">
-      {devices.map((device, index) => (
+  {devices.map((device, index) => (
+    <div key={index} style={{
+      border: '1px solid #ccc',
+      borderRadius: '8px',
+      margin: '10px',
+      padding: '10px',
+      width: '300px',
+      boxSizing: 'border-box',
+    }}>
+      <img
+        src={device.productImage}
+        alt="device"
+        style={{
+          maxWidth: '100%',
+          borderRadius: '8px',
+        }}
+      />
+      <div className="device-info" style={{ marginTop: '10px' }}>
+        <div>
+          <h4 style={{ margin: '0', fontSize: '18px' }}>{device.productName}</h4>
+          <div>
+            <button style={{
+              backgroundColor: '#f0f0f0',
+              border: 'none',
+              cursor: 'pointer',
+              fontSize: '16px',
+              marginRight: '5px',
 
-        <div className="device-card">
-          <img src={device.productImage} alt="device" />
-          <div className="device-info">
-            <div>
-              <h4>{device.productName}</h4>
-              <div>
-                <button>
-                  <RiDeleteBin6Line />
-                </button>
-                <button>
-                  <FiEdit2 />
-                </button>
-              </div>
-            </div>
-            <p className="status">{device.color}</p>
-            <div>
-              <p className="location">{device.price}</p>
-    
-            </div>
-            <p className="status">{device.description}</p>
+            }}
+            onClick={() => handleDeleteProduct(device.id)}
+            >
+              <RiDeleteBin6Line />
+            </button>
+            <button style={{
+              backgroundColor: '#f0f0f0',
+              border: 'none',
+              cursor: 'pointer',
+              fontSize: '16px',
+            }}>
+              <FiEdit2 />
+            </button>
           </div>
         </div>
-          ))}
-
+        <p className="status" style={{ fontSize: '16px', margin: '5px 0' }}>color:{device.color}</p>
+        <div>
+          <p className="location" style={{ fontSize: '14px', margin: '5px 0' }}>price:{device.price}</p>
+        </div>
+        <p className="status" style={{ fontSize: '16px' }}>description:{device.description}</p>
       </div>
+    </div>
+  ))}
+</div>
+
     </div>
   )
 
