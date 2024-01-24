@@ -82,7 +82,6 @@ const WeaverPage = () => {
           </Popup>
         </div>
       </nav>
-      <h3 className="active-heading">Active Devices</h3>
       <div className="devices-container">
   {devices.map((device, index) => (
     <div key={index} style={{
