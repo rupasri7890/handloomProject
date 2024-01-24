@@ -9,23 +9,14 @@ import Popup from "reactjs-popup"
 import AddDevice from './AddDevice';
 import { toast } from 'react-hot-toast';
 
+
 import { deletWeaverProductById } from '../integration/authentication_apies';
-const handleDeleteProduct=async (id)=>{
-  console.log(id)
 
-   const response=await deletWeaverProductById(id)
-  if (response.data.status_code === 201) {
-    toast.success(response.data.message);
-    
-
-  } else {
-    toast.error(response.data.message);
-  }
-
-}
 
 const WeaverPage = () => {
   const [devices, setDevices] = useState([]);
+  const [refresh, setRefresh] = useState(false);
+
 
   useEffect(() => {
     const fetchData = async () => {
@@ -38,8 +29,24 @@ const WeaverPage = () => {
     };
 
     fetchData();
-  }, []); // empty dependency array means this effect runs once after the initial render
-
+  }, [refresh]); // empty dependency array means this effect runs once after the initial render
+  const handleDeleteProduct=async (id)=>{
+    const shouldDelete = window.confirm('Are you sure you want to delete this item?');
+  
+      if (!shouldDelete) {
+        return;
+      }
+     const response=await deletWeaverProductById(id)
+    if (response.data.status_code === 201) {
+      toast.success(response.data.message);
+      setRefresh((prevRefresh) => !prevRefresh);
+  
+  
+    } else {
+      toast.error(response.data.message);
+    }
+  
+  }
   return (
     <div className="weaver-page">
       <nav className="weaver-nav">

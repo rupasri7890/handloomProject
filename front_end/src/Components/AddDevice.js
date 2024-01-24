@@ -1,7 +1,6 @@
 import { useForm } from "react-hook-form"
 import { convertToBase64 } from "./utils"
 import { addingWeaverProduct } from "../integration/authentication_apies"
-
 import "../styles.css"
 import toast from "react-hot-toast"
 
@@ -13,8 +12,8 @@ const AddDevice = () => {
   } = useForm()
 
   const onSubmit = async (data) => {
-    const file = data.image[0]; // Access the file from the form data
-    const base64String = await convertToBase64(file); // Convert file to base64
+    const file = data.image[0]; 
+    const base64String = await convertToBase64(file); 
     data.image=base64String
     const response= await addingWeaverProduct(data)
     if (response.data.status_code === 201) {
