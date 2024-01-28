@@ -33,11 +33,8 @@ const SignUp = () => {
       const response = await signUp(requstBodyData)
       if (response.data.status_code === 201) {
         toast.success(response.data.message);
-        if(data.dropdown === "weaver") {
-          navigate("/weaverHome")
-          } else {
-          navigate("/customerHome")
-          }
+        navigate("/")
+
       } else {
         toast.error(response.data.message);
       }      
