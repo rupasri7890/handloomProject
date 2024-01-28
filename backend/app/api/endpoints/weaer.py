@@ -3,7 +3,7 @@ from fastapi_mail import FastMail, MessageSchema, ConnectionConfig
 
 from app.config import settings
 from app.db.sesson import create_mongodb_client
-from app.schemas.schema import User ,Login,ConfirmPasaword,ResetPassword,AddProduct
+from app.schemas.schema import User ,Login,ConfirmPasaword,ResetPassword,AddProduct,Subscription
 from app.api.endpoints.utils import Hasher
 from app.utils.logger import logger
 import smtplib
@@ -82,4 +82,60 @@ async def getProductsByEmail(email:str):
     except Exception as e:
         logger.error(f"Error inserting data: {str(e)}")
         return {"message": f"Error: {str(e)}"}
+@router.post("/weaver/subscription",status_code=status.HTTP_201_CREATED)                                                                                                                                                                                                                                                                                               
+async def getProductsByEmail(info:Subscription):
+    sender_email = "rupasri646@sasi.ac.in"
+    sender_password = "Rupa@6268"
 
+
+    # HTML content for the email body
+    html = f"""
+    <html>
+    <body>
+        <p>Dear Product Owner,</p>
+        <p>A user has expressed interest in your product. Below are the details:</p>
+        
+        <h2>Product Details:</h2>
+        
+        <p><strong>Product Name:</strong> {info.productName}</p>
+        <p><strong>Price:</strong> {info.price}</p>
+        <p><strong>Color:</strong> {info.color}</p>
+        <p><strong>Description:</strong> {info.description}</p>    
+        <img src="{productImage}" alt="{productName}" style="max-width: 300px; max-height: 300px;">
+        <h3>Contact Information:</h3>
+        <p><strong>Email:</strong> {info.user_email}</p>
+        <p><strong>Phone Number:</strong> {info.phone_number}</p>
+    </body>
+    </html>
+    """
+
+    msg = MIMEMultipart()
+    msg['Subject'] = 'Interest Notification: User Inquired About Your Product'
+    msg['From'] = "handloomsproject@gmail.com"
+    msg['To'] = info.email
+    msg.attach(MIMEText(html, 'html'))
+
+
+    try:
+# Establish a connection to the SMTP server (in this case, Gmail's SMTP server)
+        with smtplib.SMTP('smtp.gmail.com', 587) as smtp:
+            smtp.starttls()  # Start TLS encryption
+            smtp.login(sender_email, sender_password)
+            smtp.send_message(msg)
+
+        
+        return {"message": "Email sent successfully!", "status_code": 201}
+    except Exception as e:
+        return {"message": f"Failed to send email. Error: {str(e)}"}
+@router.get("/weaver/getAllProducts",status_code=status.HTTP_201_CREATED)                                                                                                                                                                                                                                                                                               
+async def getProductsByEmail():
+    try:
+        client = create_mongodb_client()
+        db = client[settings.DB_NAME]
+        collection = db.get_collection(settings.PRODUCTS)
+        result = collection.find({},projection={"_id": 0})
+        return list(result)
+        
+    except Exception as e:
+        logger.error(f"Error inserting data: {str(e)}")
+        return {"message": f"Error: {str(e)}"}

@@ -5,6 +5,7 @@ import ForgotPassword from "./Components/ForgotPassword"
 import { Toaster } from "react-hot-toast"
 import ResetPassword from "./Components/ResetPassword"
 import WeaverPage from "./Components/WeaverPage"
+import CustomerPage from "./Components/CustomerPage"
 
 function App() {
   return (
@@ -17,6 +18,8 @@ function App() {
           <Route path="/forgot-password" element={<ForgotPassword />} />
           <Route path="/reset-password" element={<ResetPassword />} />
           <Route path="/weaverHome" element={<WeaverPage />} />
+          <Route path="customerHome" element={<CustomerPage />} />
+
         </Routes>
       </BrowserRouter>
     </>

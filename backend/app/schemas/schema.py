@@ -28,5 +28,13 @@ class AddProduct(BaseModel):
     price: str
     color: str
     description: str
-
+class Subscription(BaseModel):
+    email: str
+    productName: str
+    price: str
+    color: str
+    description: str
+    phone_number: str
+    user_email:str
+    
     
