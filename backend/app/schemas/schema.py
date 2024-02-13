@@ -36,5 +36,6 @@ class Subscription(BaseModel):
     description: str
     phone_number: str
     user_email:str
+    productImage:str
     
     

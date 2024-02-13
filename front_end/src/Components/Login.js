@@ -31,6 +31,7 @@ const Login = ( ) => {
       if (response.data.status_code === 200) {
         toast.success(response.data.message);
         localStorage.setItem("email",data.email)
+        localStorage.setItem("phone_number",data.phone_number)
         if(response.data.role==="weaver"){
           navigate("/weaverHome")
         }

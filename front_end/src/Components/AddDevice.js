@@ -2,9 +2,10 @@ import { useForm } from "react-hook-form"
 import { convertToBase64 } from "./utils"
 import { addingWeaverProduct } from "../integration/authentication_apies"
 import "../styles.css"
-import toast from "react-hot-toast"
+import toast from "react-hot-toast";
 
-const AddDevice = () => {
+const AddDevice = ({closeModal}) => {
+  console.log(closeModal)
   const {
     register,
     handleSubmit,
@@ -18,6 +19,7 @@ const AddDevice = () => {
     const response= await addingWeaverProduct(data)
     if (response.data.status_code === 201) {
       toast.success(response.data.message);
+      closeModal()
      }
      else if(response.data.status_code===409)
      {
@@ -81,11 +83,23 @@ const AddDevice = () => {
         />
         {errors.price && <span className="error">*This field is required</span>}
       </div>
+      <div className="btn-sec">
+      <div>
+      <button type="button" onClick={closeModal} className="close-btn" >
+          Close
+      </button>
+      </div>
+      <div>
       <button type="submit" className="add-device-btn">
         Add Item
       </button>
+      </div>
+     
+      </div>
     </form>
   )
 }
 
-export default AddDevice
+export default AddDevice;
+
+

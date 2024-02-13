@@ -86,6 +86,7 @@ async def getProductsByEmail(email:str):
 async def getProductsByEmail(info:Subscription):
     sender_email = "rupasri646@sasi.ac.in"
     sender_password = "Rupa@6268"
+    print(info.productImage)
 
 
     # HTML content for the email body
@@ -101,7 +102,7 @@ async def getProductsByEmail(info:Subscription):
         <p><strong>Price:</strong> {info.price}</p>
         <p><strong>Color:</strong> {info.color}</p>
         <p><strong>Description:</strong> {info.description}</p>    
-        <img src="{productImage}" alt="{productName}" style="max-width: 300px; max-height: 300px;">
+        <img src={info.productImage} alt="device" style={{maxWidth: '100%', borderRadius: '8px'}} />
         <h3>Contact Information:</h3>
         <p><strong>Email:</strong> {info.user_email}</p>
         <p><strong>Phone Number:</strong> {info.phone_number}</p>

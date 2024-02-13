@@ -497,9 +497,33 @@ input:focus ~ .input-border {
 
 .add-device-btn {
   padding: 10px;
+  margin-right: 10px;
   border-radius: 8px;
   border: none;
   outline: none;
+  cursor: pointer;
+  background-color: #2eaf55;
+  color: #fff;
+  margin-left: 180px;
+  font-size: 1rem;
+  font-weight: 500;
+  height: 40px;
+  width: 100px;
+  /* align-self: flex-start; */
+}
+.btn-sec{
+  display: flex;
+  justify-content: space-between;
+  padding: 20px;
+}
+.close-btn{
+  padding: 10px;
+  display: flex;
+  justify-content: center;
+  border-radius: 8px;
+  border: none;
+  outline: none;
+  margin-left: 35px;
   cursor: pointer;
   background-color: #2eaf55;
   color: #fff;
@@ -507,9 +531,9 @@ input:focus ~ .input-border {
   font-weight: 500;
   height: 40px;
   width: 100px;
-  align-self: flex-start;
-}
+  /* align-self: flex-start; */
 
+}
 .error {
   color: red;
   font-size: 0.8rem;

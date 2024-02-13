@@ -154,3 +154,38 @@ catch (error) {
     }
 }
 }
+export const custometAddCart=async (device)=>{
+  console.log(device)
+
+  try{
+    
+    const data=
+      {
+        "email": device.email,
+        "productName": device.productName,
+        "price": device.price,
+        "color": device.color,
+        "description": device.description,
+        "productImage":device.productImage,
+        "phone_number":localStorage.getItem("phone_number"),
+        "user_email": localStorage.getItem("email")
+      }
+    
+    const result= await axios.post("http://127.0.0.1:8000/weaver/subscription",data)
+    console.log(result)
+    return result
+
+}
+catch (error) {
+    if (error.response) {
+      console.error('Server Error:', error.response.data); 
+      throw new Error('Server Error'); 
+    } else if (error.request) {
+      console.error('No Response:', error.request); 
+      throw new Error('No Response');
+    } else {
+      console.error('Error:', error.message);
+      throw new Error('Request Error');
+    }
+}
+}

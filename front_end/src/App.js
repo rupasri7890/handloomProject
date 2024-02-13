@@ -19,6 +19,7 @@ function App() {
           <Route path="/reset-password" element={<ResetPassword />} />
           <Route path="/weaverHome" element={<WeaverPage />} />
           <Route path="customerHome" element={<CustomerPage />} />
+          <Route path="*" element={<h1>Not Found</h1>}/>
 
         </Routes>
       </BrowserRouter>
