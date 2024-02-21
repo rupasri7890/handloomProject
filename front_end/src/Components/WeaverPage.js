@@ -26,11 +26,12 @@ const WeaverPage = () => {
     };
 
     fetchData();
-  }, [refresh]); // empty dependency array means this effect runs once after the initial render
+  }, [refresh]);
 
   const handleDeleteProduct = async (id) => {
+    
     const shouldDelete = window.confirm('Are you sure you want to delete this item?');
-
+   
     if (!shouldDelete) {
       return;
     }
@@ -47,6 +48,10 @@ const WeaverPage = () => {
       console.error('Error deleting product:', error);
       toast.error('Failed to delete product');
     }
+  }
+
+  const handleCloseModal = () => {
+    setIsModalOpen(true);
   }
 
   return (
@@ -69,23 +74,24 @@ const WeaverPage = () => {
             />
           </div>
           <Popup
-            trigger={
-              <button onClick={() => setIsModalOpen(true)}>
-                <FaCirclePlus className="plus-icon" />
-                Add Product
-              </button>
-            }
-            modal
-            nested
-            open={isModalOpen}
-            onClose={() => setIsModalOpen(false)}
-          >
-            {(close) => (
-              <div className="modal">
-                <AddDevice closeModal={() => setIsModalOpen(false)} />
-              </div>
-            )}
-          </Popup>
+      trigger={
+        <button onClick={() => setIsModalOpen(true)}>
+          <FaCirclePlus className="plus-icon" />
+          Add Product
+        </button>
+      }
+      modal
+      nested
+      open={isModalOpen}
+      onClose={() => setIsModalOpen(false)}
+    >
+      {(close) => (
+        <div className="modal">
+          <AddDevice closeModal={close} />
+        </div>
+      )}
+    </Popup>
+
         </div>
       </nav>
       <div className="devices-container">
