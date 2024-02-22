@@ -1,9 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { FaServer } from "react-icons/fa6"
-import { IoIosSearch } from "react-icons/io"
+import { FaServer } from "react-icons/fa6";
+import { IoIosSearch } from "react-icons/io";
 import { toast } from 'react-hot-toast';
-import { deletWeaverProductById } from '../integration/authentication_apies';
 import { custometAddCart } from "../integration/authentication_apies";
 
 const CustomerPage = () => {
@@ -25,24 +24,9 @@ const CustomerPage = () => {
     fetchData();
   }, [refresh]); 
 
-  const handleDeleteProduct = async (id) => {
-    const shouldDelete = window.confirm('Are you sure you want to delete this item?');
-  
-    if (!shouldDelete) {
-      return;
-    }
-    const response = await deletWeaverProductById(id);
-    if (response.data.status_code === 201) {
-      toast.success(response.data.message);
-      setRefresh((prevRefresh) => !prevRefresh);
-    } else {
-      toast.error(response.data.message);
-    }
-  }
-
-  const handleAddToCart = async (id, color) => {
+  const handleAddToCart = async (device, color) => {
     try {
-      const res = await custometAddCart(id, color);
+      const res = await custometAddCart(device.id, color);
       console.log(res)
       if (res.data.status_code === 201) {
         toast.success('Product added to cart');
@@ -53,10 +37,6 @@ const CustomerPage = () => {
       console.error('Error adding product to cart:', error);
       toast.error('Failed to add product to cart');
     }
-  }
-
-  const handleChangeColor = (color) => {
-    setSelectedColor(color.hex);
   }
 
   return (
@@ -80,13 +60,22 @@ const CustomerPage = () => {
           </div>
         </div>
       </nav>
-      <div className="devices-container">
+      <div className="devices-container" style={{ display: 'flex', flexWrap: 'wrap', gap: '10px' }}>
         {devices.map((device, index) => (
-          <div key={index} className="device-card">
+          <div key={index} style={{
+            border: '1px solid #ccc',
+            borderRadius: '8px',
+            padding: '20px',
+            width: '200px', // Adjusted width for smaller product cards with reduced gap
+            boxSizing: 'border-box',
+          }}>
             <img
               src={device.productImage}
               alt="device"
-              className="device-image"
+              style={{
+                maxWidth: '100%',
+                borderRadius: '8px',
+              }}
             />
             <div className="device-info">
               <h4>{device.productName}</h4>
@@ -111,7 +100,7 @@ const CustomerPage = () => {
                 />
               </div>
               <div className="addColor">
-              <button  onClick={() => handleAddToCart(device, customColor || selectedColor)}>Add to Cart</button>
+                <button onClick={() => handleAddToCart(device, customColor || selectedColor)}>Add to Cart</button>
               </div>
             </div>
           </div>
