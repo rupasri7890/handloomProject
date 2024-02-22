@@ -154,7 +154,7 @@ catch (error) {
     }
 }
 }
-export const custometAddCart=async (device)=>{
+export const custometAddCart=async (device,color)=>{
   console.log(device)
 
   try{
@@ -164,7 +164,7 @@ export const custometAddCart=async (device)=>{
         "email": device.email,
         "productName": device.productName,
         "price": device.price,
-        "color": device.color,
+        "color": color,
         "description": device.description,
         "productImage":device.productImage,
         "phone_number":localStorage.getItem("phone_number"),

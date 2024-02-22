@@ -4,12 +4,13 @@ import { FaServer } from "react-icons/fa6"
 import { IoIosSearch } from "react-icons/io"
 import { toast } from 'react-hot-toast';
 import { deletWeaverProductById } from '../integration/authentication_apies';
-import {custometAddCart} from "../integration/authentication_apies"
+import { custometAddCart } from "../integration/authentication_apies";
 
 const CustomerPage = () => {
   const [devices, setDevices] = useState([]);
   const [refresh, setRefresh] = useState(false);
-
+  const [selectedColor, setSelectedColor] = useState('#ffffff'); // Default color is white
+  const [customColor, setCustomColor] = useState(''); // State to store custom color input
 
   useEffect(() => {
     const fetchData = async () => {
@@ -22,7 +23,7 @@ const CustomerPage = () => {
     };
 
     fetchData();
-  }, [refresh]); // empty dependency array means this effect runs once after the initial render
+  }, [refresh]); 
 
   const handleDeleteProduct = async (id) => {
     const shouldDelete = window.confirm('Are you sure you want to delete this item?');
@@ -39,11 +40,23 @@ const CustomerPage = () => {
     }
   }
 
-  const handleAddToCart = async (id) => {
-    // Implement your add to cart logic here
-    // Optionally, you can show a toast or perform any other action to indicate the item has been added to cart
-    const res= await custometAddCart(id)
-    toast.success('Product added to cart');
+  const handleAddToCart = async (id, color) => {
+    try {
+      const res = await custometAddCart(id, color);
+      console.log(res)
+      if (res.data.status_code === 201) {
+        toast.success('Product added to cart');
+      } else {
+        toast.error('Failed to add product to cart');
+      }
+    } catch (error) {
+      console.error('Error adding product to cart:', error);
+      toast.error('Failed to add product to cart');
+    }
+  }
+
+  const handleChangeColor = (color) => {
+    setSelectedColor(color.hex);
   }
 
   return (
@@ -51,7 +64,7 @@ const CustomerPage = () => {
       <nav className="weaver-nav">
         <div>
           <FaServer className="weaver-icon" />
-          <p className="weaver-title">Weaver Page</p>
+          <p className="weaver-title">Customer Page</p>
         </div>
         <div className="weaver-btns">
           <div>
@@ -65,61 +78,47 @@ const CustomerPage = () => {
               placeholder="Search"
             />
           </div>
-    
         </div>
       </nav>
       <div className="devices-container">
         {devices.map((device, index) => (
-          <div key={index} style={{
-            border: '1px solid #ccc',
-            borderRadius: '8px',
-            margin: '10px',
-            padding: '10px',
-            width: '300px',
-            boxSizing: 'border-box',
-          }}>
+          <div key={index} className="device-card">
             <img
               src={device.productImage}
               alt="device"
-              style={{
-                maxWidth: '100%',
-                borderRadius: '8px',
-              }}
+              className="device-image"
             />
-            <div className="device-info" style={{ marginTop: '10px' }}>
-              <div>
-                <h4 style={{ margin: '0', fontSize: '18px' }}>{device.productName}</h4>
-                
+            <div className="device-info">
+              <h4>{device.productName}</h4>
+              <p>Price: {device.price}</p>
+              <p>Description: {device.description}</p>
+              <div className="add-device-input-container">
+                <label htmlFor="color">Color:</label>
+                <input
+                  type="color"
+                  id="color"
+                  className="add-device-input"
+                  value={selectedColor}
+                  onChange={(e) => setSelectedColor(e.target.value)}
+                />
+                <input
+                  type="text"
+                  id="customColor"
+                  className="add-device-input"
+                  placeholder="Custom Color"
+                  value={customColor}
+                  onChange={(e) => setCustomColor(e.target.value)}
+                />
               </div>
-              <p className="status" style={{ fontSize: '16px', margin: '5px 0' }}>color:{device.color}</p>
-              <div>
-                <p className="location" style={{ fontSize: '14px', margin: '5px 0' }}>price:{device.price}</p>
+              <div className="addColor">
+              <button  onClick={() => handleAddToCart(device, customColor || selectedColor)}>Add to Cart</button>
               </div>
-              <p className="status" style={{ fontSize: '16px' }}>description:{device.description}</p>
-              <div>
-      
-                
-                  {/* Add to Cart button */}
-                  <button
-                    style={{
-                      backgroundColor: 'blue',
-                      border: 'none',
-                      marginLeft:'40px',
-                      cursor: 'pointer',
-                      fontSize: '16px',
-                    }}
-                    onClick={() => handleAddToCart(device)}
-                  >
-                    Add to Cart
-                  </button>
-                </div>
             </div>
           </div>
         ))}
       </div>
     </div>
-  )
-
+  );
 };
 
 export default CustomerPage;

@@ -558,3 +558,91 @@ input:focus ~ .input-border {
   align-items: center;
   justify-content: center;
 }
+.weaver-page {
+  padding: 20px;
+}
+
+.weaver-nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+
+.weaver-icon {
+  font-size: 24px;
+}
+
+.weaver-title {
+  font-size: 24px;
+  margin-left: 10px;
+}
+
+.weaver-btns {
+  display: flex;
+  align-items: center;
+}
+
+.search-icon {
+  font-size: 24px;
+  cursor: pointer;
+}
+
+.weaver-input {
+  padding: 8px;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+  margin-left: 10px;
+}
+
+.devices-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 20px;
+}
+
+.device-card {
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.device-image {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+}
+
+.device-info {
+  padding: 10px;
+}
+
+.device-info h4 {
+  margin: 0;
+}
+
+.device-info p {
+  margin: 5px 0;
+}
+
+.addColor {
+  background-color: #007bff;
+  color:blue;
+  padding: 8px 16px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.add-to-cart-btn:hover {
+  background-color: #0056b3;
+}
+
+.add-to-cart-btn:disabled {
+  background-color: #adb5bd;
+  cursor: not-allowed;
+}
+
+
+/* Add more styles as needed */

@@ -137,7 +137,6 @@ const WeaverPage = () => {
                   </button>
                 </div>
               </div>
-              <p className="status" style={{ fontSize: '16px', margin: '5px 0' }}>color:{device.color}</p>
               <div>
                 <p className="location" style={{ fontSize: '14px', margin: '5px 0' }}>price:{device.price}</p>
               </div>

@@ -51,23 +51,6 @@ const AddDevice = ({ closeModal }) => {
         {errors.image && <span className="error">*This field is required</span>}
       </div>
       <div className="add-device-input-container">
-        <label htmlFor="color">Color:</label>
-        <input
-          type="color"
-          id="color"
-          className="add-device-input"
-          {...register("color", { required: true })}
-        />
-        <input
-          type="text"
-          id="customColor"
-          className="add-device-input"
-          placeholder="Custom Color"
-          {...register("customColor")}
-        />
-        {errors.color && <span className="error">*This field is required</span>}
-      </div>
-      <div className="add-device-input-container">
         <label htmlFor="price">Price:</label>
         <input
           type="text"

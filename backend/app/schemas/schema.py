@@ -26,7 +26,6 @@ class AddProduct(BaseModel):
     productName: str
     productImage: str
     price: str
-    color: str
     description: str
 class Subscription(BaseModel):
     email: str
