@@ -26,7 +26,7 @@ const CustomerPage = () => {
 
   const handleAddToCart = async (device, color) => {
     try {
-      const res = await custometAddCart(device.id, color);
+      const res = await custometAddCart(device, color);
       console.log(res)
       if (res.data.status_code === 201) {
         toast.success('Product added to cart');
@@ -66,7 +66,7 @@ const CustomerPage = () => {
             border: '1px solid #ccc',
             borderRadius: '8px',
             padding: '20px',
-            width: '200px', // Adjusted width for smaller product cards with reduced gap
+            width: '200px', 
             boxSizing: 'border-box',
           }}>
             <img
